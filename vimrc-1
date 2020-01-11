@@ -1,0 +1,204 @@
+filetype plugin on
+let g:pydiction_location = '~/.vim/bundle/Pydiction/complete-dict'
+
+let g:SimpylFold_docstring_preview = 1
+
+"autocomplete
+let g:ycm_server_python_interpreter='/usr/local/bin/python3'
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+"打开vim时不再询问是否加载ycm_extra_conf.py配置
+let g:ycm_confirm_extra_conf = 0
+set completeopt=longest,menu
+"自动开启语义补全
+let g:ycm_seed_identifiers_with_syntax = 1
+"在注释中也开启补全
+let g:ycm_complete_in_comments = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 0
+"字符串中也开启补全
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+"开启基于tag的补全，可以在这之后添加需要的标签路径
+let g:ycm_collect_identifiers_from_tags_files = 1
+"开始补全的字符数
+let g:ycm_min_num_of_chars_for_completion = 2
+"补全后自动关闭预览窗口
+let g:ycm_autoclose_preview_window_after_completion = 1
+"禁止缓存匹配项,每次都重新生成匹配项
+let g:ycm_cache_omnifunc=0
+"离开插入模式后自动关闭预览窗口
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"语法关键字补全
+let g:ycm_seed_identifiers_with_syntax = 1
+
+"custom keys
+let mapleader=" "
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"
+map <F5> :w<cr>:!python3 %<cr>:q<cr>  "按F6键进行python调试
+
+set background=dark
+colorscheme solarized
+
+"set guifont=Monaco:h14
+
+" NERDTree setting
+map <C-n> :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+
+"I don't like swap files
+set noswapfile
+
+"turn on numbering
+set nu
+
+
+"it would be nice to set tag files by the active virtualenv here
+":set tags=~/mytags "tags for ctags and taglist
+"omnicomplete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+"------------Start Python PEP 8 stuff----------------
+" Number of spaces that a pre-existing tab is equal to.
+au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
+
+"spaces for indents
+au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw set expandtab
+au BufRead,BufNewFile *.py set softtabstop=4
+
+" Use the below highlight group when displaying bad whitespace is desired.
+highlight BadWhitespace ctermbg=red guibg=red
+
+" Display tabs at the beginning of a line in Python mode as bad.
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+" Make trailing whitespace be flagged as bad.
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" Wrap text after a certain number of characters
+au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
+
+" Use UNIX (\n) line endings.
+au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+
+" Set the default file encoding to UTF-8:
+set encoding=utf-8
+
+" For full syntax highlighting:
+let python_highlight_all=1
+syntax on
+
+" Keep indentation level from previous line:
+autocmd FileType python set autoindent
+
+" make backspaces more powerfull
+set backspace=indent,eol,start
+
+
+"Folding based on indentation:
+autocmd FileType python set foldmethod=indent
+"use space to open folds
+nnoremap <space> za 
+"----------Stop python PEP 8 stuff--------------
+
+"js stuff"
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+
+
+" airline 配置区域
+""-------------------------------------------------------------
+" AIRLINE
+" ------------------------------------------------------------
+" enable powerline fonts
+let g:airline_powerline_fonts = 1
+" enable tabline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
+" show tab number in tab line
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#vimtex#left = ""
+let g:airline#extensions#vimtex#right = ""
+"
+set laststatus=2 " Show the statusline
+let g:airline_theme="solarized" 
+
+
+"auto add pyhton header --start
+autocmd BufNewFile *.py 0r ~/.vim/vim_template/vim_python_header
+autocmd BufNewFile *.py ks|call FileName()|'s
+autocmd BufNewFile *.py ks|call CreatedTime()|'s
+
+fun FileName()
+    if line("$") > 10
+        let l = 10
+    else
+        let l = line("$")
+    endif
+    exe "1," . l . "g/File:.*/s/File:.*/File: " .expand("%")
+endfun
+
+fun CreatedTime()
+    if line("$") > 10
+        let l = 10
+    else
+        let l = line("$")
+    endif
+    exe "1," . l . "g/Time:.*/s/Time:.*/Time:" .strftime("%Y-%m-%d %T")
+endfun
+"auto add python header --end
+
+"vundle --start
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+"git interface
+Plugin 'tpope/vim-fugitive'
+"filesystem
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'kien/ctrlp.vim' 
+
+"html
+"  isnowfy only compatible with python not python3
+Plugin 'isnowfy/python-vim-instant-markdown'
+Plugin 'jtratner/vim-flavored-markdown'
+Plugin 'suan/vim-instant-markdown'
+Plugin 'nelstrom/vim-markdown-preview'
+Plugin 'marijnh/tern_for_vim'
+"python sytax checker
+Plugin 'nvie/vim-flake8'
+Plugin 'vim-scripts/Pydiction'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+"auto-completion stuff
+"Plugin 'klen/python-mode'
+Plugin 'Valloric/YouCompleteMe'
+"Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
+""code folding
+Plugin 'tmhedberg/SimpylFold'
+
+"Colors!!!
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'jnurmine/Zenburn'
+
+" 自动补全括号
+Plugin 'jiangmiao/auto-pairs'
+" 状态栏插件
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+" nerdcommenter 注释插件
+Plugin 'majutsushi/tagbar'
+call vundle#end()
+
+filetype plugin indent on    " enables filetype detection
+"vundle --end
+

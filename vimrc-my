@@ -1,0 +1,55 @@
+set nocompatible              " required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
+
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdtree'
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" base setting
+"set shortmess=atI  "不显示帮助乌干达的提示
+colorscheme delek "设置配色方案
+set showcmd "输入的命令显示出来
+syntax on "语法高亮
+set tabstop=4  "Tab键的宽度设为４
+set softtabstop=4
+set shiftwidth=4  "统一缩进为４
+set autoindent  "开启自动缩进，保持缩进值与上一行相等
+autocmd InsertLeave * se nocul "用浅色高亮当前行
+autocmd InsertEnter * se cul "用浅色高亮当前行
+set ruler "显示当前光标行列位置
+set mouse=a "支持鼠标
+
+" python setting 
+set encoding=utf-8 "支持utf-8
+set nocompatible "关闭与vi的兼容模式
+set number "显示行号
+set nowrap    "不自动折行
+set showmatch    "显示匹配的括号
+set scrolloff=3        "距离顶部和底部3行"
+set encoding=utf-8  "编码
+set fenc=utf-8      "编码
+set mouse=a        "启用鼠标
+set hlsearch        "搜索高亮
+syntax on    "语法高亮
+
+au BufNewFile,BufRead *.py
+\ set tabstop=4   "tab宽度
+\ set softtabstop=4 
+\ set shiftwidth=4  
+\ set textwidth=79  "行最大宽度
+\ set expandtab       "tab替换为空格键
+\ set autoindent      "自动缩进
+\ set fileformat=unix   "保存文件格式
+
